@@ -1,5 +1,5 @@
 from textnode import TextNode, TextType
-from leafnode import LeafNode
+from htmlnode import *
 def main():
     result = TextNode('this is some anchor text','link','https://www.boot.dev')
     print(result)
