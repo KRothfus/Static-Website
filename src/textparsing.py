@@ -1,7 +1,7 @@
 from textnode import TextType
 
 #I think i want to use recursion here. need to return by calling this function until there
-# are is no text available to parse through. 
+# are is no text available to parse through. Then I need to add the tests for this function.
 def split_nodes_delimiteter(old_nodes,delimiter,text_type):
     result = []
     if text_type != TextType.TEXT:
