@@ -1,5 +1,6 @@
 import unittest
-from htmlnode import LeafNode, ParentNode, HTMLNode
+from htmlnode import LeafNode, ParentNode, HTMLNode, text_node_to_html_node
+from textnode import TextNode, TextType
 #'hello'
 
 class TestHTMLNode(unittest.TestCase):
@@ -108,6 +109,24 @@ class TestHTMLNode(unittest.TestCase):
             "<h2><b>Bold text</b>Normal text<i>italic text</i>Normal text</h2>",
         )
 
-
+    def test_text(self):
+        node = TextNode("This is a text node", TextType.TEXT)
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, None)
+        self.assertEqual(html_node.value, "This is a text node")
+    
+    def test_text_b(self):
+        node = TextNode("This is a text node", TextType.BOLD)
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, 'b')
+        self.assertEqual(html_node.value, "This is a text node")
+        self.assertEqual(html_node.to_html(),"<b>This is a text node</b>")
+        
+    def test_text_link(self):
+        node = TextNode("This is a text node", TextType.LINK,'google.com')
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, 'a')
+        self.assertEqual(html_node.value, "This is a text node")
+        self.assertEqual(html_node.to_html(),'<a href="google.com">This is a text node</a>')
 if __name__ == "__main__":
     unittest.main()
