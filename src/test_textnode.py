@@ -1,7 +1,7 @@
 import unittest
 
 from textnode import *
-
+from textparsing import split_nodes_delimiter
 
 
 class TestTextNode(unittest.TestCase):
@@ -23,7 +23,19 @@ class TestTextNode(unittest.TestCase):
         node = TextNode("This is a text node", TextType.ITALIC)
         self.assertIs(node.url, None)
         
+    def test_delimiter_italic(self):
+        node = TextNode("This is an _italic_ text node", TextType.TEXT)
+        self.assertEqual(split_nodes_delimiter([node],'_',TextType.ITALIC),[TextNode("This is an ", TextType.TEXT) , TextNode("italic",TextType.ITALIC), TextNode(" text node",TextType.TEXT)])
     
+    def test_delimiter_italic(self):
+        node = TextNode("This is a `code text node.`", TextType.TEXT)
+        self.assertEqual(split_nodes_delimiter([node],'`',TextType.CODE),[TextNode("This is a ", TextType.TEXT) , TextNode("code text node.",TextType.CODE)])
+    
+    def test_delimiter_no_close(self):
+        node = TextNode("This is a `code text node.", TextType.TEXT)
+        with self.assertRaises(Exception) as context:
+            split_nodes_delimiter([node], '`', TextType.CODE)
+        self.assertTrue('No closing "`" found' in str(context.exception))
         
 if __name__ == "__main__":
     unittest.main()
