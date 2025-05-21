@@ -26,3 +26,4 @@ def split_nodes_delimiter(old_nodes,delimiter,text_type):
         elif remaining_text:
             result.append(TextNode(remaining_text,TextType.TEXT))
     return result
+
