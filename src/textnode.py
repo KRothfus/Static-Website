@@ -1,5 +1,5 @@
 from enum import Enum
-
+import re
 class TextType(Enum):
     
     TEXT = ''    
@@ -57,17 +57,47 @@ def markdown_to_blocks(markdown):
         if result_lines:
             result.append('\n'.join(result_lines))
     return result
-# need to add the logic to determine if each is actually the thing it is. like for a code block
-# we need to check if there is three ` before and after.
+
 def block_to_block_type(markdown):
-    if '#' in markdown.split()[0:6]:
-        return BlockType.HEADING
-    if '`' in markdown:
+    if markdown.startswith('#'):
+        level = 0
+        for char in markdown:
+           if char == '#':
+               level += 1
+           else:
+               break
+        if level <= 6 and markdown[level:level+1] == ' ':
+            return BlockType.HEADING
+    
+    if markdown.startswith('```') and markdown.endswith('```'):
         return BlockType.CODE
-    if '"' in markdown:
+    
+    #quotes
+    lines = markdown.split('\n')
+    quotes_are_lines = True
+    for line in lines:
+        if not line.startswith('>'):
+            quotes_are_lines = False
+            break
+    if quotes_are_lines:
         return BlockType.QUOTE
-    if '-' in markdown:
+    
+    #unordered list
+    list_lines = True
+    for line in lines:
+        if not line.startswith('- '):
+            list_lines = False
+            break
+    if list_lines:
         return BlockType.UNORDEREDLIST
-    if 'o' in markdown:
+    
+    #ordered list
+    order_list_lines = True
+    for i, line in enumerate(lines):
+        if not line.startswith(f'{i+1}. '):
+            order_list_lines = False
+            break
+    if order_list_lines:
         return BlockType.ORDEREDLIST
+    
     return BlockType.PARAGRAPH

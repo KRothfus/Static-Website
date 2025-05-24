@@ -187,5 +187,37 @@ class TestTextNode(unittest.TestCase):
                 "- This is a list\n- with items",
             ],
         )
+        
+    def test_block_to_block_type_quote(self):
+        md = '>hello\n>world'
+        block_type = block_to_block_type(md)
+        self.assertEqual(block_type, BlockType.QUOTE)
+    
+    def test_block_to_block_type_code(self):
+        md = '```hello world```'
+        block_type = block_to_block_type(md)
+        self.assertEqual(block_type, BlockType.CODE)
+        
+    def test_block_to_block_type_header(self):
+        md = '### hello world'
+        block_type = block_to_block_type(md)
+        self.assertEqual(block_type, BlockType.HEADING)
+        
+    def test_block_to_block_type_unordered(self):
+        md = '- hello\n- world'
+        block_type = block_to_block_type(md)
+        self.assertEqual(block_type, BlockType.UNORDEREDLIST)
+    def test_block_to_block_type_ordered(self):
+        md = '1. hello\n2. world'
+        block_type = block_to_block_type(md)
+        self.assertEqual(block_type, BlockType.ORDEREDLIST)
+    def test_block_to_block_type_ordered(self):
+        md = '1. hello\n3. world'
+        block_type = block_to_block_type(md)
+        self.assertEqual(block_type, BlockType.PARAGRAPH)    
+    def test_block_to_block_type_paragraph(self):
+        md = 'hello world'
+        block_type = block_to_block_type(md)
+        self.assertEqual(block_type, BlockType.PARAGRAPH)
 if __name__ == "__main__":
     unittest.main()
