@@ -161,5 +161,59 @@ class TestHTMLNode(unittest.TestCase):
             html,
             "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
         )
+        
+    def test_headerblock(self):
+        md = """
+    ### this is a header
+    """
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><h3>this is a header</h3></div>",
+        )
+
+    def test_orderedlistblock(self):
+        md = """
+    1. one
+    2. two
+    3. three
+    """
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><ol><li>one</li><li>two</li><li>three</li></ol></div>",
+        )
+
+    def test_unorderedlistblock(self):
+        md = """
+    - one
+    - two
+    - three
+    """
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><ul><li>one</li><li>two</li><li>three</li></ul></div>",
+        )
+        
+    def test_quoteblock(self):
+        md = """
+    > one
+    > two
+    > three
+    """
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><blockquote>\none\ntwo\nthree\n</blockquote></div>",
+        )
 if __name__ == "__main__":
     unittest.main()
