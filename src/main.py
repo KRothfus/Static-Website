@@ -26,7 +26,7 @@ def copy_files_to_public():
     recursive_to_public()
 
 def main():
-    basepath = sys.argv
+    basepath = sys.argv[1]
     print(basepath)
     copy_files_to_public()
     generate_pages_recursive('content','template.html','docs',basepath)
