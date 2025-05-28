@@ -67,3 +67,14 @@ def text_to_children(text):
     for node in nodes_of_text:
         nodes_of_html.append(text_node_to_html_node(node))
     return nodes_of_html
+
+def extract_title(markdown):
+    lines = markdown.split('\n')
+    header_found = False
+    for line in lines:
+        if line.startswith('# '):
+            h1_header = line[2:].strip(' ')
+            header_found = True  
+    if not header_found:
+        raise Exception('No header found!')
+    return h1_header

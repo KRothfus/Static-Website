@@ -1,5 +1,6 @@
 import unittest
 
+from buildhtml import extract_title
 from textnode import *
 from textparsing import split_nodes_delimiter
 from linkextraction import *
@@ -219,5 +220,24 @@ class TestTextNode(unittest.TestCase):
         md = 'hello world'
         block_type = block_to_block_type(md)
         self.assertEqual(block_type, BlockType.PARAGRAPH)
+    def test_extracttitle(self):
+        md = '# Hello   '
+        header = extract_title(md)
+        self.assertEqual(header, 'Hello')
+        
+    def test_extracttitle(self):
+        md = '''
+        # Hello 
+        ## hi
+        '''
+        header = extract_title(md)
+        self.assertEqual(header, 'Hello')
+        
+    def test_extracttitle(self):
+        md = ' Hello '
+        with self.assertRaises(Exception) as context:
+            extract_title(md)
+        self.assertTrue('No header found!' in str(context.exception))
+
 if __name__ == "__main__":
     unittest.main()
