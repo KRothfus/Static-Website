@@ -1,6 +1,8 @@
 import os
 import shutil
 
+from pagegeneration import generate_pages_recursive
+
 def copy_files_to_public():
     def recursive_to_public(initial_dir = './static'):
         if os.path.exists(initial_dir):
@@ -14,13 +16,15 @@ def copy_files_to_public():
                     os.mkdir(initial_dir.replace('static','public')+'/'+dir)
                     recursive_to_public(initial_dir+'/'+dir)
     if os.path.exists('./public'):
-        print(f'Creating Public Directory')
+        print(f'Removing Public Directory')
         shutil.rmtree('./public')
+    print('Creating Public Directory')
     os.mkdir('./public')
     recursive_to_public()
 
 def main():
     copy_files_to_public()
+    generate_pages_recursive('content','template.html','public')
 # result = TextNode('this is some anchor text','link','https://www.boot.dev')
 # print(result)
 

@@ -34,8 +34,8 @@ def block_type_to_html_node(type,text_block):
                     quote_lines.append(line[2:])
                 else:
                     quote_lines.append(line)
-            text_quote = '\n'.join(quote_lines)+'\n'
-            childs = text_to_children('\n'+text_quote)
+            text_quote = ''.join(quote_lines)+'\n'
+            childs = text_to_children(text_quote)
             return ParentNode('blockquote',children=childs)
         case BlockType.UNORDEREDLIST:
             split_text = text_block.split('\n')
@@ -70,11 +70,7 @@ def text_to_children(text):
 
 def extract_title(markdown):
     lines = markdown.split('\n')
-    header_found = False
     for line in lines:
         if line.startswith('# '):
-            h1_header = line[2:].strip(' ')
-            header_found = True  
-    if not header_found:
-        raise Exception('No header found!')
-    return h1_header
+            return line[2:].strip(' ')
+    raise Exception('No header found!')
