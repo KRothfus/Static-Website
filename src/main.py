@@ -27,7 +27,7 @@ def copy_files_to_public():
 
 def main():
     basepath = sys.argv[1]
-    print(basepath[1:-1])
+    print(basepath[:-1])
     copy_files_to_public()
     generate_pages_recursive('content','template.html','docs',basepath)
 # result = TextNode('this is some anchor text','link','https://www.boot.dev')
